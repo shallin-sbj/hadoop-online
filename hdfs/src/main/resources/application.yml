@@ -1,0 +1,2 @@
+hdfs:
+  defaultFS: hdfs://s201

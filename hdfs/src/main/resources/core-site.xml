@@ -17,21 +17,12 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
-   <property>
+    <property>
        <name>fs.defaultFS</name>
        <value>hdfs://s201/8020</value>
    </property>
-
-    <property>
-        <name>fs.hdfs.impl</name>
-        <value>org.apache.hadoop.hdfs.DistributedFileSystem</value>
-        <description>The FileSystem for hdfs: uris.</description>
-    </property>
-
    <property>
-      <name>hadoop.tmp.dir</name>
-      <value>/data/hadoop/tmp/tmp</value>
-    </property>
-
-
+    <name>hadoop.tmp.dir</name>
+    <value>/home/centos/tmp/tmp</value>
+</property>
 </configuration>

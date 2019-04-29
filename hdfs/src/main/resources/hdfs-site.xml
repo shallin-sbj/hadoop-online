@@ -19,24 +19,24 @@
 <configuration>
     <property>
        <name>dfs.namenode.name.dir</name>
-       <value>/data/hadoop/tmp/dfs/name</value>
+       <value>/home/centos/tmp/dfs/name</value>
     </property>
 
     <property>
           <name>dfs.datanode.data.dir</name>
-          <value>/data/hadoop/tmp/dfs/data</value>
+          <value>/home/centos/tmp/dfs/data</value>
     </property>
 
     <property>
           <name>dfs.replication</name>
-          <value>3</value>
+          <value>1</value>
     </property>
 
     <property>
           <name>dfs.permissions</name>
           <value>false</value>
     </property>
-
+    
     <property>
         <name>dfs.namenode.http-address</name>
         <value>s201:50070</value>
@@ -46,5 +46,6 @@
            <name>dfs.secondary.http.address</name>
            <value>s201:50090</value>
     </property>
+
 
 </configuration>
