@@ -1,2 +1,2 @@
 hdfs:
-  defaultFS: hdfs://s201
+  defaultFS: hdfs://hadoop.online
