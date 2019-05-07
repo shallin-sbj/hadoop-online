@@ -2,9 +2,6 @@ package com.scl.template.utils.service;
 
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
-import com.mongodb.MongoClient;
-import com.mongodb.client.ClientSession;
-import com.mongodb.client.MongoCollection;
 import com.scl.template.utils.config.MongoDBConifg;
 import com.scl.template.utils.dao.SmsRecognitionRepository;
 import com.scl.template.utils.domain.SmsRecognition;
@@ -113,10 +110,11 @@ public class ReadFileSerice {
                 }
 
             }
-            MongoClient client = mongoDBConifg.getClient();
-            ClientSession session = client.startSession();
-            MongoCollection<SmsRecognition> smsRecognition = mongoDBConifg.getMongoDatabase().getCollection("smsRecognition", SmsRecognition.class);
-            smsRecognitionRepository.bathInsert(session, smsRecognition, batchSaveList, false);
+//            MongoClient client = mongoDBConifg.getClient();
+//            ClientSession session = client.startSession();
+//            MongoCollection<SmsRecognition> smsRecognition = mongoDBConifg.getMongoDatabase().getCollection("smsRecognition", SmsRecognition.class);
+//            smsRecognitionRepository.bathInsert(session, smsRecognition, batchSaveList, false);
+            smsRecognitionRepository.bathInsert(batchSaveList);
             return true;
         } catch (Throwable e) {
             log.info(e.getMessage(), e);
