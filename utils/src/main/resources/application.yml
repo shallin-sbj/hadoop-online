@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+#      uri: mongodb://192.168.101.33:27017/admin
+      uri: mongodb://10.0.7.14:27017/admin
+      dbname: thirdpartycall
+
+
+  sucl:
+    basepath: D:/st_corp_brand_area_sms_recognition_dt
+    filename: st_corp_brand_area_sms_recognition_dt_20190425.json
+    pagesize: 1000
+
