@@ -1,6 +1,6 @@
 package com.scl.hadoop.hbase.config;
 
-import com.scl.hadoop.hbase.service.HBaseService;
+import com.scl.hadoop.hbase.repository.HBaseService;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

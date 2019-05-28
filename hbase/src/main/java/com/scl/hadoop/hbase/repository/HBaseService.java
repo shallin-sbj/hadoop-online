@@ -1,4 +1,4 @@
-package com.scl.hadoop.hbase.service;
+package com.scl.hadoop.hbase.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
