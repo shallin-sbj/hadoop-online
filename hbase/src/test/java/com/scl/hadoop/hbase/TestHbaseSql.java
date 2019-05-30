@@ -1,6 +1,6 @@
 package com.scl.hadoop.hbase;
 
-import com.scl.hadoop.hbase.service.HBaseService;
+import com.scl.hadoop.hbase.repository.HBaseService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,13 +39,13 @@ public class TestHbaseSql {
         hbaseService.createTableBySplitKeys("test_base", Arrays.asList("f", "back"), hbaseService.getSplitKeys(null));
 
         // 插入三条数据
-        hbaseService.putData("data:test_base", "66804_000001", "f", new String[]{"project_id", "varName", "coefs", "pvalues", "tvalues", "create_time"}, new String[]{"40866", "mob_3", "0.9416", "0.0000", "12.2293", "null"});
-        hbaseService.putData("data:test_base", "66804_000002", "f", new String[]{"project_id", "varName", "coefs", "pvalues", "tvalues", "create_time"}, new String[]{"40866", "idno_prov", "0.9317", "0.0000", "9.8679", "null"});
-        hbaseService.putData("data:test_base", "66804_000003", "f", new String[]{"project_id", "varName", "coefs", "pvalues", "tvalues", "create_time"}, new String[]{"40866", "education", "0.8984", "0.0000", "25.5649", "null"});
+        hbaseService.putData("test_base", "66804_000001", "f", new String[]{"project_id", "varName", "coefs", "pvalues", "tvalues", "create_time"}, new String[]{"40866", "mob_3", "0.9416", "0.0000", "12.2293", "null"});
+        hbaseService.putData("test_base", "66804_000002", "f", new String[]{"project_id", "varName", "coefs", "pvalues", "tvalues", "create_time"}, new String[]{"40866", "idno_prov", "0.9317", "0.0000", "9.8679", "null"});
+        hbaseService.putData("test_base", "66804_000003", "f", new String[]{"project_id", "varName", "coefs", "pvalues", "tvalues", "create_time"}, new String[]{"40866", "education", "0.8984", "0.0000", "25.5649", "null"});
 
         //查询数据
         //1. 根据rowKey查询
-        Map<String, String> result1 = hbaseService.getRowData("data:test_base", "66804_000001");
+        Map<String, String> result1 = hbaseService.getRowData("test_base", "66804_000001");
         System.out.println("+++++++++++根据rowKey查询+++++++++++");
         result1.forEach((k, value) -> {
             System.out.println(k + "---" + value);
