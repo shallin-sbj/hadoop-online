@@ -21,6 +21,7 @@
         <module>utils</module>
         <module>hbase</module>
         <module>demo</module>
+        <module>kafka</module>
     </modules>
 
     <properties>
