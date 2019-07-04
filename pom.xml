@@ -22,6 +22,7 @@
         <module>hbase</module>
         <module>demo</module>
         <module>kafka</module>
+        <module>lock</module>
     </modules>
 
     <properties>
