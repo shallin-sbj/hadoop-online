@@ -59,6 +59,21 @@ public class TestHbaseSql {
         System.out.println();
         // 需要时写到文件中
 //        writeFile("test_base", result2);
+
+        // 模糊查询数据
+        String tableName = "data:area_button";
+        String prefix = "CN:6800184-20190701";
+        long startPage= System.currentTimeMillis();
+        Map<String, Map<String, String>> result = hbaseService.getResultScannerPrefixFilter(tableName, prefix);
+        result.forEach((k, value) -> {
+            log.info(k + "---" + value);
+        });
+        long spentTimes= System.currentTimeMillis() - startPage;
+        log.info("page query: SPEND TIME:{} ", spentTimes + " data size :" + result2.size());
+        log.info("+++++++++++遍历查询+++++++++++");
+
+        writeFile(tableName,result);
+
     }
 
 
@@ -68,7 +83,7 @@ public class TestHbaseSql {
             try {
                 fileName = fileName.substring(fileName.lastIndexOf(":") + 1);
                 fileWriter = new FileWriter("C:\\Users\\User\\Desktop\\" + fileName + ".txt");//创建文本文件
-                System.out.println("fileName:" + fileName);
+                log.info("fileName:" + fileName);
                 AtomicInteger i = new AtomicInteger();
                 FileWriter finalFileWriter = fileWriter;
                 result2.forEach((k, value) -> {
