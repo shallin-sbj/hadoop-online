@@ -39,6 +39,13 @@ public class SecordSortAppTest {
     @Autowired
     private HdfsUtils hdfsUtils;
 
+    /**
+     * 实现二次排序
+     * @throws IOException
+     * @throws URISyntaxException
+     * @throws ClassNotFoundException
+     * @throws InterruptedException
+     */
     @Test
     public void SecordSortAppTest() throws IOException, URISyntaxException, ClassNotFoundException, InterruptedException {
         String INPUT_PATH = "/test/secondsort";

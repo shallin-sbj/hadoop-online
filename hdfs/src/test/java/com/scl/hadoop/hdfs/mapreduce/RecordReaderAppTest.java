@@ -33,6 +33,13 @@ public class RecordReaderAppTest {
     @Autowired
     private HdfsUtils hdfsUtils;
 
+    /**
+     * RedcordReader 操作
+     * @throws IOException
+     * @throws URISyntaxException
+     * @throws ClassNotFoundException
+     * @throws InterruptedException
+     */
     @Test
     public void RecordReaderAppTest() throws IOException, URISyntaxException, ClassNotFoundException, InterruptedException {
         String INPUT_PATH = "/test/bigdata.txt";
