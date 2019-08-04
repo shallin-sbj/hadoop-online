@@ -1,4 +1,4 @@
-package com.scl.hadoop.hdfs.service;
+package com.scl.hadoop.hdfs.utils;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.IOUtils;
@@ -23,9 +23,9 @@ import java.util.Map;
  * HDFS相关的基本操作
  */
 @Service
-public class HdfsService {
+public class HdfsUtils {
 
-    private Logger logger = LoggerFactory.getLogger(HdfsService.class);
+    private Logger logger = LoggerFactory.getLogger(HdfsUtils.class);
 
     private Configuration configuration;
 
@@ -37,7 +37,7 @@ public class HdfsService {
      *
      * @return org.apache.hadoop.fs.FileSystem
      */
-    private FileSystem getFileSystem() throws IOException {
+    public FileSystem getFileSystem() throws IOException {
         return FileSystem.get(getConfiguration());
     }
 
@@ -147,25 +147,23 @@ public class HdfsService {
             try {
                 fileSystem = getFileSystem();
 
-                //最终的HDFS文件目录
-                String hdfsPath = generateHdfsPath(path);
-
-                FileStatus[] statuses;
-                //根据Path过滤器查询
-                if (pathFilter != null) {
-                    statuses = fileSystem.listStatus(new Path(hdfsPath), pathFilter);
-                } else {
-                    statuses = fileSystem.listStatus(new Path(hdfsPath));
-                }
+                FileStatus[] statuses = getFileStatuses(pathFilter, fileSystem, path);
 
                 if (statuses != null) {
                     for (FileStatus status : statuses) {
                         //每个文件的属性
                         Map<String, Object> fileMap = new HashMap<>(2);
+                        fileMap.put("path", status.getPath().toString());   //路径
+                        fileMap.put("isDir", status.isDirectory());         //文件/文件夹
 
-                        fileMap.put("path", status.getPath().toString());
-                        fileMap.put("isDir", status.isDirectory());
+                        long len = status.getLen(); //长度
+                        fileMap.put("len", len);
 
+                        String permission = status.getPermission().toString(); //权限
+                        fileMap.put("permission", permission);
+
+                        short replication = status.getReplication(); //副本系数
+                        fileMap.put("replication", replication);
                         result.add(fileMap);
                     }
                 }
@@ -177,6 +175,28 @@ public class HdfsService {
         }
 
         return result;
+    }
+
+    /**
+     * 获取文件状态
+     *
+     * @param pathFilter
+     * @param fileSystem
+     * @param path
+     * @return
+     * @throws IOException
+     */
+    private FileStatus[] getFileStatuses(PathFilter pathFilter, FileSystem fileSystem, String path) throws IOException {
+        //最终的HDFS文件目录
+        String hdfsPath = generateHdfsPath(path);
+        FileStatus[] statuses;
+        //根据Path过滤器查询
+        if (pathFilter != null) {
+            statuses = fileSystem.listStatus(new Path(hdfsPath), pathFilter);
+        } else {
+            statuses = fileSystem.listStatus(new Path(hdfsPath));
+        }
+        return statuses;
     }
 
 
@@ -410,6 +430,64 @@ public class HdfsService {
             } catch (IOException e) {
                 logger.error(e.getMessage());
             }
+        }
+    }
+
+    /**
+     * 合并文件
+     *
+     * @param srcPath  原文件
+     * @param destPath 目标文件
+     */
+    public void merge(String srcPath, String destPath) {
+        try {
+            FileSystem remote = getFileSystem();
+
+            // 获得本地文件系统
+            FileSystem local = FileSystem.getLocal(new Configuration());
+
+//            // 获得本地文件系统
+//            FileSystem local = FileSystem.getLocal(getConfiguration());
+
+//            // 获取data目录下的所有文件路径
+            RegexAcceptPathFilter pathFilter = new RegexAcceptPathFilter("^.*.txt$");
+
+
+            // 获取data目录下的所有文件路径
+            Path[] dirs = FileUtil.stat2Paths(getFileStatuses(pathFilter, remote, srcPath));
+
+            FSDataOutputStream out = null;
+            FSDataInputStream in = null;
+
+            for (Path dir : dirs) {
+                // 文件名称
+                String fileName = dir.getName().replace("-", "");
+                // 只接受目录下的.txt文件
+//                FileStatus[] localStatus = local.globStatus(dir, new RegexAcceptPathFilter("^.*.txt$"));
+                String hdfsPath = generateHdfsPath(fileName);
+                FileStatus[] localStatus = getFileStatuses(pathFilter, remote, hdfsPath);
+
+                // 获得目录下的所有文件
+                Path[] listedPaths = FileUtil.stat2Paths(localStatus);
+                // 输出路径
+                Path block = new Path(destPath + "/" + fileName + ".txt");
+                // 打开输出流
+                out = remote.create(block);
+                for (Path p : listedPaths) {
+                    // 打开输入流
+                    in = local.open(p);
+                    // 复制数据
+                    org.apache.hadoop.io.IOUtils.copyBytes(in, out, 4096, false);
+                    // 关闭输入流
+                    in.close();
+                }
+                if (out != null) {
+                    // 关闭输出流
+                    out.close();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

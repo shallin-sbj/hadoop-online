@@ -1,2 +1,4 @@
 hdfs:
-  defaultFS: hdfs://hadoop.online
+  #  defaultFS: hdfs://hadoop.online
+  #  defaultFS: hdfs://192.168.101.110
+  defaultFS: hdfs://192.168.1.201

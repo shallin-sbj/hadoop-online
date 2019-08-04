@@ -1,7 +1,7 @@
 package com.scl.hadoop.hdfs;
 
-import com.scl.hadoop.hdfs.service.HdfsService;
-import org.apache.hadoop.fs.BlockLocation;
+import com.scl.hadoop.hdfs.domain.User;
+import com.scl.hadoop.hdfs.utils.HdfsUtils;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ import java.util.Map;
 public class HdfsApplication {
 
     @Autowired
-    private HdfsService hdfsService;
+    private HdfsUtils hdfsUtils;
 
     @Test
     public void contextLoads() {
@@ -37,9 +37,9 @@ public class HdfsApplication {
      */
     @Test
     public void testMkdir() {
-        boolean result1 = hdfsService.mkdir("/testDir");
+        boolean result1 = hdfsUtils.mkdir("/testDir");
         System.out.println("创建结果：" + result1);
-        boolean result2 = hdfsService.mkdir("/testDir/subDir");
+        boolean result2 = hdfsUtils.mkdir("/testDir/subDir");
         System.out.println("创建结果：" + result2);
     }
 
@@ -48,11 +48,13 @@ public class HdfsApplication {
      */
     @Test
     public void testUploadFile() {
-        //TODO 暂时还没有调通
+        //TODO
         //测试上传三个文件
-        hdfsService.uploadFileToHdfs("C:/Users/User/Desktop/a.txt", "/testDir");
-        hdfsService.uploadFileToHdfs("C:/Users/User/Desktop/b.txt", "/testDir");
-        hdfsService.uploadFileToHdfs("C:/Users/User/Desktop/c.txt", "/testDir/subDir");
+        hdfsUtils.uploadFileToHdfs("C:/Users/User/Desktop/a.txt", "/testDir");
+        hdfsUtils.uploadFileToHdfs("C:/Users/User/Desktop/b.txt", "/testDir");
+        hdfsUtils.uploadFileToHdfs("C:/Users/User/Desktop/c.txt", "/testDir/subDir");
+
+//        hdfsService.uploadFileToHdfs("C:/Users/User/Desktop/user.txt", "/testDir");
     }
 
     /**
@@ -60,7 +62,7 @@ public class HdfsApplication {
      */
     @Test
     public void testListFiles() {
-        List<Map<String, Object>> result = hdfsService.listFiles("/testDir", null);
+        List<Map<String, Object>> result = hdfsUtils.listFiles("/testDir", null);
 
         result.forEach(fileMap -> {
             fileMap.forEach((key, value) -> {
@@ -75,8 +77,8 @@ public class HdfsApplication {
      */
     @Test
     public void testDownloadFile() {
-        //TODO 操作失败
-        hdfsService.downloadFileFromHdfs("/testDir/hello.txt", "C:/Users/User/Desktop/test12.txt");
+        //TODO
+        hdfsUtils.downloadFileFromHdfs("/testDir/a.txt", "C:/Users/User/Desktop/test12.txt");
     }
 
     /**
@@ -84,8 +86,8 @@ public class HdfsApplication {
      */
     @Test
     public void testOpen() throws IOException {
-        //TODO 未测通
-        FSDataInputStream inputStream = hdfsService.open("/testDir/hello.txt");
+
+        FSDataInputStream inputStream = hdfsUtils.open("/testDir/a.txt");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         String line = null;
@@ -99,8 +101,8 @@ public class HdfsApplication {
      */
     @Test
     public void testOpenWithObject() throws IOException {
-//        User user = hdfsService.openWithObject("/testDir/b.txt", User.class);
-//        System.out.println(user);
+        User user = hdfsUtils.openWithObject("/testDir/user.txt", User.class);
+        System.out.println(user.toString());
     }
 
     /**
@@ -108,7 +110,7 @@ public class HdfsApplication {
      */
     @Test
     public void testRename(){
-        hdfsService.rename("/testDir/b.txt","/testDir/b_new.txt");
+        hdfsUtils.rename("/testDir/b.txt","/testDir/b_new.txt");
         //再次遍历
         testListFiles();
     }
@@ -119,24 +121,29 @@ public class HdfsApplication {
      */
     @Test
     public void testDelete(){
-        hdfsService.delete("/testDir/b_new.txt");
+        hdfsUtils.delete("/testDir/b_new.txt");
 
         //再次遍历
         testListFiles();
     }
 
     /**
-     * 测试获取某个文件在HDFS集群的位置
+     * 测试合并文件
      */
     @Test
     public void testGetFileBlockLocations() throws IOException {
-        BlockLocation[] locations = hdfsService.getFileBlockLocations("/testDir/a.txt");
+        String srcPath = "/testDir/";
+        String destPath ="/testDir/subDir/";
+        hdfsUtils.merge(srcPath,destPath);
 
-        if (locations != null && locations.length > 0) {
-            for (BlockLocation location : locations) {
-                System.out.println(location.getHosts()[0]);
-            }
-        }
+////        FSDataInputStream inputStream = hdfsUtils.open(destPath);
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//        String line = null;
+//        while ((line = reader.readLine()) != null) {
+//            System.out.println(line);
+//        }
+//        reader.close();
+
     }
 
 }
