@@ -56,23 +56,22 @@ public class TestHbaseSql {
         String str1 = hbaseService.getColumnValue("test_base", "66804_000002", "f", "area_button");
         System.out.println("+++++++++++精确查询某个单元格的数据+++++++++++");
         System.out.println(str1);
-        System.out.println();
         // 需要时写到文件中
 //        writeFile("test_base", result2);
 
-        // 模糊查询数据
-        String tableName = "data:area_button";
-        String prefix = "CN:6800184-20190701";
-        long startPage= System.currentTimeMillis();
-        Map<String, Map<String, String>> result = hbaseService.getResultScannerPrefixFilter(tableName, prefix);
-        result.forEach((k, value) -> {
-            log.info(k + "---" + value);
-        });
-        long spentTimes= System.currentTimeMillis() - startPage;
-        log.info("page query: SPEND TIME:{} ", spentTimes + " data size :" + result2.size());
-        log.info("+++++++++++遍历查询+++++++++++");
-
-        writeFile(tableName,result);
+//        // 模糊查询数据
+//        String tableName = "data:area_button";
+//        String prefix = "CN:6800184-20190701";
+//        long startPage= System.currentTimeMillis();
+//        Map<String, Map<String, String>> result = hbaseService.getResultScannerPrefixFilter(tableName, prefix);
+//        result.forEach((k, value) -> {
+//            log.info(k + "---" + value);
+//        });
+//        long spentTimes= System.currentTimeMillis() - startPage;
+//        log.info("page query: SPEND TIME:{} ", spentTimes + " data size :" + result.size());
+//        log.info("+++++++++++遍历查询+++++++++++");
+//
+//        writeFile(tableName,result);
 
     }
 
@@ -103,6 +102,5 @@ public class TestHbaseSql {
             }
         }
     }
-
 
 }
