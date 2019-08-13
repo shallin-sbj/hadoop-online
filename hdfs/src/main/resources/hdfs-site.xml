@@ -39,12 +39,12 @@
     
     <property>
         <name>dfs.namenode.http-address</name>
-        <value>hadoop.online:50070</value>
+        <value>s110:50070</value>
     </property>
 
     <property>
            <name>dfs.secondary.http.address</name>
-           <value>hadoop.online:50090</value>
+           <value>s110:50090</value>
     </property>
 
 

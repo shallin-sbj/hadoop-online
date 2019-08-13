@@ -12,7 +12,8 @@ public class SimpleKafkaConsumer {
     public static void main(String[] args) {
 
         Properties props = new Properties();
-        String services = "s201:9092,s202:9092,s203:9092,s204:9092";
+//        String services = "s201:9092,s202:9092,s203:9092,s204:9092";
+        String services = "s110:9092";
 
         props.put("bootstrap.servers", services);
         //每个消费者分配独立的组号

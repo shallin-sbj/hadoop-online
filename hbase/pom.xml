@@ -145,7 +145,7 @@
                             <manifest>
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>lib</classpathPrefix>
-                                <mainClass>com.scl.hadoop.hbase.Application</mainClass>
+                                <mainClass>com.scl.online.hbase.Application</mainClass>
                                 <useUniqueVersions>false</useUniqueVersions>
                             </manifest>
                         </archive>

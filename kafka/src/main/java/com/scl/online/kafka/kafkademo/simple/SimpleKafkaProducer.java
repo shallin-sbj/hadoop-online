@@ -11,7 +11,8 @@ public class SimpleKafkaProducer {
     public static void main(String[] args) {
 
         Properties props = new Properties();
-        String services = "s201:9092,s202:9092,s203:9092,s204:9092";
+//        String services = "s201s201:9092,s202:9092,s203:9092,s204:9092";
+        String services = "s110:9092";
         //broker地址
         props.put("bootstrap.servers", services);
 
