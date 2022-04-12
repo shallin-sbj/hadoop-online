@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <hadoop.version>3.2.0</hadoop.version>
+        <hadoop.version>3.2.3</hadoop.version>
         <mongodb-driver.version>3.8.0-beta2</mongodb-driver.version>
     </properties>
 
